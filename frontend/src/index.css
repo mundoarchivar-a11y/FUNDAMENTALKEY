@@ -1,0 +1,318 @@
+/* ───────────────────────────────────────────────────────────────
+   Macro Alignment Engine v2 — Terminal Pro
+   src/index.css — drop-in for Tailwind v4 project.
+   The components use CSS variables + custom utility classes
+   defined here. They DO NOT require Tailwind classes;
+   replace your existing index.css with this file.
+─────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+/* Tailwind v4 theme — exposes our tokens as Tailwind utilities too */
+@theme {
+  --color-bull: #34d399;
+  --color-bear: #fb7185;
+  --color-warn: #fbbf24;
+  --color-london: #22d3ee;
+  --color-asia: #a78bfa;
+  --color-dovish: #38bdf8;
+  --color-overlap: #818cf8;
+  --color-nypm: #fb923c;
+  --color-neutral: #94a3b8;
+
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-sans: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root {
+  --bg-0: #07080a;
+  --bg-1: #0b0c10;
+  --bg-2: #0f1116;
+  --bg-3: #14161c;
+  --bg-4: #1a1d24;
+
+  --line-1: rgba(255, 255, 255, 0.04);
+  --line-2: rgba(255, 255, 255, 0.07);
+  --line-3: rgba(255, 255, 255, 0.12);
+  --line-4: rgba(255, 255, 255, 0.18);
+
+  --fg-0: #f4f5f7;
+  --fg-1: #d6d9e0;
+  --fg-2: #8a8f9a;
+  --fg-3: #5a5f6a;
+  --fg-4: #3f434b;
+
+  --bull: #34d399;       --bull-bg: rgba(52, 211, 153, 0.08);  --bull-line: rgba(52, 211, 153, 0.35);  --bull-glow: rgba(52, 211, 153, 0.45);
+  --bear: #fb7185;       --bear-bg: rgba(251, 113, 133, 0.08); --bear-line: rgba(251, 113, 133, 0.35); --bear-glow: rgba(251, 113, 133, 0.45);
+  --warn: #fbbf24;       --warn-bg: rgba(251, 191, 36, 0.08);  --warn-line: rgba(251, 191, 36, 0.35);  --warn-glow: rgba(251, 191, 36, 0.45);
+  --london: #22d3ee;     --london-bg: rgba(34, 211, 238, 0.08);  --london-line: rgba(34, 211, 238, 0.35);  --london-glow: rgba(34, 211, 238, 0.45);
+  --asia: #a78bfa;       --asia-bg: rgba(167, 139, 250, 0.08);  --asia-line: rgba(167, 139, 250, 0.35);  --asia-glow: rgba(167, 139, 250, 0.45);
+  --dovish: #38bdf8;     --dovish-bg: rgba(56, 189, 248, 0.08);  --dovish-line: rgba(56, 189, 248, 0.35);  --dovish-glow: rgba(56, 189, 248, 0.45);
+  --overlap: #818cf8;    --overlap-bg: rgba(129, 140, 248, 0.08);  --overlap-line: rgba(129, 140, 248, 0.35);  --overlap-glow: rgba(129, 140, 248, 0.45);
+  --nypm: #fb923c;       --nypm-bg: rgba(251, 146, 60, 0.08);  --nypm-line: rgba(251, 146, 60, 0.35);  --nypm-glow: rgba(251, 146, 60, 0.45);
+  --neutral: #94a3b8;    --neutral-bg: rgba(148, 163, 184, 0.06);  --neutral-line: rgba(148, 163, 184, 0.25);  --neutral-glow: rgba(148, 163, 184, 0.25);
+
+  --grid: rgba(255, 255, 255, 0.025);
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg-0);
+  color: var(--fg-1);
+  font-family: 'Inter', system-ui, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.5;
+  font-feature-settings: 'cv11' 1, 'ss01' 1;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-image:
+    radial-gradient(ellipse 80% 35% at 50% 0%, rgba(52, 211, 153, 0.05), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(129, 140, 248, 0.04), transparent 70%),
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: auto, auto, 28px 28px, 28px 28px;
+  background-position: 0 0, 0 0, -1px -1px, -1px -1px;
+  background-attachment: fixed;
+}
+
+/* ── Type primitives ─────────────────────────────────────────────────────
+   Stronger hierarchy: sans (Inter) is the default for prose so the page
+   doesn't feel like a uniform terminal dump. JetBrains Mono is reserved for
+   numeric/tabular content and structural labels — that contrast carries the
+   visual rhythm. */
+.sans  { font-family: 'Inter', system-ui, sans-serif; }
+.mono  { font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; font-feature-settings: 'tnum' 1; }
+.tnum  { font-variant-numeric: tabular-nums; }
+.kerntight { letter-spacing: -0.02em; }
+.kernwide  { letter-spacing: 0.12em; }
+.kernxwide { letter-spacing: 0.22em; }
+
+/* Sans hierarchy for body/headlines (used in panels, prose, calendar bodies) */
+.h1 { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 22px; line-height: 1.15; letter-spacing: -0.015em; color: var(--fg-0); }
+.h2 { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 17px; line-height: 1.2;  letter-spacing: -0.01em;  color: var(--fg-0); }
+.h3 { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 14px; line-height: 1.25; letter-spacing: 0;        color: var(--fg-0); }
+.body-md { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 13.5px; line-height: 1.55; color: var(--fg-1); }
+.body-sm { font-family: 'Inter', sans-serif; font-weight: 400; font-size: 12px;   line-height: 1.5;  color: var(--fg-2); }
+.caption { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 11px;   line-height: 1.4;  color: var(--fg-3); }
+
+.label {
+  font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.2em;
+  color: var(--fg-3);
+}
+.label-bright { color: var(--fg-2); }
+.label-strong { color: var(--fg-1); font-weight: 800; }
+
+/* ── Panel chrome ────────────────────────────────────────── */
+.panel { background: linear-gradient(180deg, var(--bg-2), var(--bg-1)); border: 1px solid var(--line-2); position: relative; }
+.panel-flat { background: var(--bg-1); border: 1px solid var(--line-2); }
+.panel-tight { background: var(--bg-2); border: 1px solid var(--line-2); }
+
+.panel-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; padding: 8px 12px;
+  border-bottom: 1px solid var(--line-2);
+  background: var(--bg-2);
+  min-height: 32px;
+}
+.panel-head .left {
+  display: flex; align-items: center; gap: 8px;
+  color: var(--fg-2);
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.22em;
+}
+.panel-head .right {
+  display: flex; align-items: center; gap: 8px;
+  color: var(--fg-3); font-size: 10px; letter-spacing: 0.1em;
+}
+.panel-head .dot { width: 6px; height: 6px; border-radius: 1px; background: var(--fg-3); }
+
+/* ── Signal frames ──────────────────────────────────────────────────────
+   `.signal-strong` and `.signal-warn` paint a thicker border AND a 3px
+   coloured edge across the top of the panel — that horizontal accent is
+   what catches the eye before you read the text. The inset+outer shadow
+   keeps the previous glow. */
+.signal-strong { border-color: var(--bull-line); box-shadow: inset 0 0 0 1px var(--bull-line), 0 0 56px -10px var(--bull-glow); position: relative; }
+.signal-strong::before { content:''; position: absolute; left: 0; right: 0; top: -1px; height: 3px; background: var(--bull); box-shadow: 0 0 14px var(--bull-glow); z-index: 1; }
+.signal-strong.bear { border-color: var(--bear-line); box-shadow: inset 0 0 0 1px var(--bear-line), 0 0 56px -10px var(--bear-glow); }
+.signal-strong.bear::before { background: var(--bear); box-shadow: 0 0 14px var(--bear-glow); }
+.signal-warn { border-color: var(--warn-line); box-shadow: inset 0 0 0 1px var(--warn-line), 0 0 44px -12px var(--warn-glow); position: relative; }
+.signal-warn::before { content:''; position: absolute; left: 0; right: 0; top: -1px; height: 3px; background: repeating-linear-gradient(90deg, var(--warn) 0 8px, transparent 8px 12px); z-index: 1; }
+
+/* Signal tick — rendered INSIDE the panel-head .right slot so it never
+   overlaps content. Inline pill, no absolute positioning. */
+.tick {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 9px 3px 7px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.22em;
+  border: 1px solid var(--line-3); border-radius: 2px;
+  background: var(--bg-3);
+  white-space: nowrap; line-height: 1;
+}
+.tick svg { width: 12px; height: 12px; }
+.tick.bull { color: var(--bull); border-color: var(--bull); background: linear-gradient(180deg, color-mix(in oklab, var(--bull) 16%, var(--bg-3)), var(--bg-3)); box-shadow: 0 0 0 1px var(--bull-line), 0 0 14px -4px var(--bull-glow); }
+.tick.bear { color: var(--bear); border-color: var(--bear); background: linear-gradient(180deg, color-mix(in oklab, var(--bear) 16%, var(--bg-3)), var(--bg-3)); box-shadow: 0 0 0 1px var(--bear-line), 0 0 14px -4px var(--bear-glow); }
+.tick.warn { color: var(--warn); border-color: var(--warn); background: linear-gradient(180deg, color-mix(in oklab, var(--warn) 16%, var(--bg-3)), var(--bg-3)); box-shadow: 0 0 0 1px var(--warn-line), 0 0 14px -4px var(--warn-glow); }
+
+/* Pill */
+.pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 8px; border-radius: 2px;
+  border: 1px solid var(--line-3); background: var(--bg-3);
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--fg-1); white-space: nowrap;
+}
+.pill .bullet { width: 6px; height: 6px; border-radius: 1px; background: currentColor; }
+
+/* Tone helpers (used widely in components) */
+.t-bull{color:var(--bull)} .t-bear{color:var(--bear)} .t-warn{color:var(--warn)}
+.t-london{color:var(--london)} .t-asia{color:var(--asia)} .t-overlap{color:var(--overlap)}
+.t-dovish{color:var(--dovish)} .t-nypm{color:var(--nypm)} .t-neutral{color:var(--neutral)}
+.t-fg0{color:var(--fg-0)} .t-fg1{color:var(--fg-1)} .t-fg2{color:var(--fg-2)} .t-fg3{color:var(--fg-3)} .t-fg4{color:var(--fg-4)}
+.bg-bull{background:var(--bull-bg)} .bg-bear{background:var(--bear-bg)} .bg-warn{background:var(--warn-bg)}
+
+/* Cells */
+.cell { display:flex; align-items:center; justify-content:space-between; padding:8px 12px; border-bottom:1px solid var(--line-2); }
+.cell:last-child { border-bottom: 0; }
+.hr { height: 1px; background: var(--line-2); width: 100%; }
+.vr { width: 1px; align-self: stretch; background: var(--line-2); }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-3); border-radius: 0; }
+::-webkit-scrollbar-thumb:hover { background: var(--line-4); }
+
+button, .clickable { cursor: pointer; }
+button { font: inherit; color: inherit; background: transparent; border: 0; padding: 0; }
+button:focus-visible, .clickable:focus-visible { outline: 1px solid var(--overlap); outline-offset: 2px; }
+
+/* Animations */
+@keyframes pulseGlow { 0%,100% { opacity: 1; } 50% { opacity: 0.55; } }
+.pulse { animation: pulseGlow 1.6s ease-in-out infinite; }
+@keyframes pulseDot { 0% { box-shadow: 0 0 0 0 currentColor; } 70% { box-shadow: 0 0 0 8px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+.pulse-dot { animation: pulseDot 1.8s ease-out infinite; }
+@keyframes blink { 0%,92%,100%{opacity:1} 93%,95%{opacity:.45} }
+.cursorblink::after { content: '▌'; color: var(--bull); margin-left: 4px; animation: blink 2.6s linear infinite; font-weight: 400; }
+
+.hoverable { transition: border-color .15s ease, background .15s ease, transform .15s ease; }
+.hoverable:hover { border-color: var(--line-4); }
+
+/* Numbers */
+.num-hero { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 36px; letter-spacing: -0.02em; line-height: 1; }
+.num-xl   { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 28px; letter-spacing: -0.02em; line-height: 1; }
+.num-lg   { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; line-height: 1; }
+.num-md   { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 16px; line-height: 1; }
+.num-sm   { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 13px; line-height: 1; }
+
+h1,h2,h3,h4,h5,h6,p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+/* Layout utilities */
+.row { display: flex; }
+.col { display: flex; flex-direction: column; }
+.gap-1{gap:4px}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}.gap-5{gap:20px}.gap-6{gap:24px}
+.flex-1{flex:1}.flex-2{flex:2}.flex-3{flex:3}
+.items-center{align-items:center}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-stretch{align-items:stretch}
+.justify-between{justify-content:space-between}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}
+.wrap{flex-wrap:wrap}.grow{flex:1 1 auto}
+.w-full{width:100%}.h-full{height:100%}
+.text-right{text-align:right}.text-center{text-align:center}.uppercase{text-transform:uppercase}
+.relative{position:relative}.absolute{position:absolute}.overflow-hidden{overflow:hidden}.pointer-none{pointer-events:none}
+.p-2{padding:8px}.p-3{padding:12px}.p-4{padding:16px}.p-5{padding:20px}.p-6{padding:24px}
+.px-3{padding-left:12px;padding-right:12px}.px-4{padding-left:16px;padding-right:16px}
+.py-2{padding-top:8px;padding-bottom:8px}.py-3{padding-top:12px;padding-bottom:12px}
+.pt-3{padding-top:12px}.pb-3{padding-bottom:12px}
+
+/* Spark + Heat */
+.spark { display: block; width: 100%; height: 100%; overflow: visible; }
+.spark .area { fill: currentColor; opacity: 0.12; }
+.spark .line { fill: none; stroke: currentColor; stroke-width: 1.5; }
+.spark .dot  { fill: currentColor; }
+.spark .grid { stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 2 3; }
+
+.heat {
+  display: flex; align-items: center; justify-content: center;
+  height: 36px; border: 1px solid var(--line-2);
+  font-family: 'JetBrains Mono', monospace; font-weight: 600;
+  font-size: 11px; position: relative;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Killzone swatches */
+.kz-asia { background: var(--asia); }
+.kz-london { background: var(--london); }
+.kz-overlap { background: var(--overlap); }
+.kz-nyam { background: var(--warn); }
+.kz-nypm { background: var(--nypm); }
+.kz-flat { background: var(--neutral); }
+
+.crosshair { cursor: crosshair; }
+
+/* ── NOW marker (timeline) ──────────────────────────────────────────────
+   The vertical "now" line that sweeps across the weekly grid.  We layer:
+   1. A thin column line that spans ALL 7 day rows (sub-radar) so you can
+      read the column position even when scanning Mon/Tue/Wed etc.
+   2. A bright, animated marker only on TODAY's row.
+   3. A floating chip "NOW · HH:MM ET" docked above the hour scale at the
+      same column position so the eye snaps to it. */
+
+.now-col {
+  position: absolute; top: 0; bottom: 0;
+  width: 2px; pointer-events: none; z-index: 2;
+  background: linear-gradient(180deg,
+    color-mix(in oklab, var(--bull) 60%, transparent),
+    color-mix(in oklab, var(--bull) 18%, transparent));
+}
+.now-col.today { background: var(--bull); width: 3px; box-shadow: 0 0 16px var(--bull-glow); z-index: 4; }
+.now-col.today::before {
+  content: ''; position: absolute; left: -5px; right: -5px; top: 0; bottom: 0;
+  background: radial-gradient(ellipse at center, var(--bull-glow), transparent 70%);
+  opacity: .35;
+}
+.now-arrow {
+  position: absolute; left: 50%; top: -7px; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 9px solid var(--bull);
+  filter: drop-shadow(0 0 6px var(--bull-glow));
+}
+.now-arrow.bottom {
+  top: auto; bottom: -7px;
+  border-top: none; border-bottom: 9px solid var(--bull);
+}
+.now-chip {
+  position: absolute; z-index: 12; pointer-events: none;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 8px;
+  background: var(--bull); color: var(--bg-0);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px var(--bg-0), 0 6px 20px -6px var(--bull-glow);
+  white-space: nowrap;
+}
+.now-chip::after {
+  content: ''; position: absolute; left: 50%; bottom: -5px; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--bull);
+}
+.now-chip.flip-left  { transform: translateX(calc(-100% + 8px)); }
+.now-chip.flip-left::after  { left: auto; right: 8px; transform: none; }
+.now-chip.flip-right { transform: translateX(-8px); }
+.now-chip.flip-right::after { left: 8px; transform: none; }
+@keyframes nowPulse { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
+.now-pulse { animation: nowPulse 1.4s ease-in-out infinite; }

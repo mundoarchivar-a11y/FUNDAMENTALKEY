@@ -1,0 +1,21 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.env
+
+# Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local artifacts
+logs/
+Fundamental-key/
+design-handoff/
+design-handoff.zip
+run_macro_engine.ps1
